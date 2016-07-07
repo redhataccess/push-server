@@ -1,0 +1,24 @@
+{
+  "name": "push-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "postinstall": "node setup.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "boom": "^3.2.2",
+    "dotenv": "^2.0.0",
+    "hapi": "^13.5.0",
+    "hapi-mongodb": "^6.0.0",
+    "joi": "^8.4.2",
+    "urlsafe-base64": "^1.0.0",
+    "web-push": "^2.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.9.2"
+  }
+}
