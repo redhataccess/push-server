@@ -38,7 +38,12 @@ Expects an application/json payload with the following structure:
 
 ### POST /unregister
 
-Work in progress.
+Expects an application/json payload with the following structure:
+```
+{
+  "endpoint": "the endpoint you want to unsubscribe (required)"
+}
+```
 
 ### POST /notify
 
