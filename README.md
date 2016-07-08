@@ -23,9 +23,13 @@ This will start nodemon and will automatically restart anytime the code is modif
 
 A simple route that will respond with "Healthy" if the server is up and running.
 
-### POST /register
+### GET /subscription
 
-Expects an application/json payload with the following structure:
+Retrieves all of the subscriptions.
+
+### POST /subscription
+
+Adds a subscription. Expects an application/json payload with the following structure:
 ```
 {
   "endpoint": "(the endpoint string provided by the browser)",
@@ -36,28 +40,46 @@ Expects an application/json payload with the following structure:
 }
 ```
 
-### POST /unregister
+### GET /subscription/{subscriptionId}
 
-Expects an application/json payload with the following structure:
+Retrieves a subscription.
+
+### DELETE /subscription/{subscriptionId}
+
+Deletes a subscription.
+
+### GET /message
+
+Retrieves all of the messages.
+
+### POST /message
+
+Adds a message. Expects an application/json payload with the following structure:
 ```
 {
-  "endpoint": "the endpoint you want to unsubscribe (required)"
+  "title": "whatever string",
+  "body": "whatever string"
 }
 ```
+
+### GET /message/{messageId}
+
+Retrieves a message.
+
+### DELETE /message/{messageId}
+
+Deletes a message.
 
 ### POST /notify
 
 Currently this route sends push notifications to all of the subscriptions in the database. This, of course, will need to change.
 
+The messageId is the ID of the message that you want to send. The database will grab that message and then send it to all of the subscriptions.
+
 Expects an application/json payload with the following structure:
 ```
 {
-  "message": {
-    "title": "The title you want for your notification (required)",
-    "body": "The body of your notification (required)",
-    "icon": "url to the icon you want displayed (optional)",
-    "data": { *** any additional data you want to send *** (optional) }
-  }
+  "messageId": "whatever message id"
 }
 ```
 

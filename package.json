@@ -14,7 +14,9 @@
     "dotenv": "^2.0.0",
     "hapi": "^13.5.0",
     "hapi-mongodb": "^6.0.0",
+    "hapi-mongoose": "^1.0.1",
     "joi": "^8.4.2",
+    "mongoose": "^4.5.3",
     "urlsafe-base64": "^1.0.0",
     "web-push": "^2.1.1"
   },
