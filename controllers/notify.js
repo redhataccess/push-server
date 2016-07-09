@@ -39,14 +39,20 @@ exports.send = {
               title: message.title,
               body: message.body
             })
-          });
+          })
+            .then((body) => {
+              console.log('message sent', body);
+            })
+            .catch(err => {
+              console.log(err);
+            });
 
           notificationPromises.push(notificationPromise);
         });
 
         return Promise.all(notificationPromises);
       })
-      .then(() => reply('noftify'))
+      .then(() => reply('Notified!'))
       .catch(err => reply(Boom.badImplementation('error', err)));
   }
 }
