@@ -12,12 +12,17 @@ webPush.setGCMAPIKey(process.env.GCM_API_KEY);
 exports.send = {
   validate: {
     payload: {
-      messageId: Joi.string().required()
+      messageId: Joi.string().required(),
+      subscriberIds: Joi.array().items(Joi.string().required()).required()
     }
   },
   handler: (request, reply) => {
     const messagePromise = Message.findOne({ '_id': request.payload.messageId });
-    const subscriptionsPromise = Subscription.find({});
+    const subscriptionsPromise = Subscription.find({
+      '_id': {
+        '$in': request.payload.subscriberIds
+      }
+    });
 
     Promise.all([messagePromise, subscriptionsPromise])
       .then(values => {
