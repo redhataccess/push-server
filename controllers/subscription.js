@@ -46,3 +46,29 @@ exports.remove = {
       .catch(err => reply(Boom.notFound('missing', err)));
   }
 }
+
+exports.messageReceived = {
+  handler: (request, reply) => {
+    Subscription.findOne({ '_id': request.params.subscriptionId })
+      .then(subscription => {
+        const sentMessage = subscription.messages.id(request.params.messageId);
+        sentMessage.received = Date.now();
+        subscription.save();
+      });
+
+    return reply('received');
+  }
+}
+
+exports.messageOpened = {
+  handler: (request, reply) => {
+    Subscription.findOne({ '_id': request.params.subscriptionId })
+      .then(subscription => {
+        const sentMessage = subscription.messages.id(request.params.messageId);
+        sentMessage.opened = Date.now();
+        subscription.save();
+      });
+
+    return reply('opened');
+  }
+}
