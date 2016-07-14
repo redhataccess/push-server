@@ -12,17 +12,19 @@ webPush.setGCMAPIKey(process.env.GCM_API_KEY);
 exports.send = {
   validate: {
     payload: {
-      messageId: Joi.string().required(),
-      subscriberIds: Joi.array().items(Joi.string().required()).required()
+      messageId: Joi.string().required()
+      // subscriberIds: Joi.array().items(Joi.string().required()).required()
     }
   },
   handler: (request, reply) => {
     const messagePromise = Message.findOne({ '_id': request.payload.messageId });
-    const subscriptionsPromise = Subscription.find({
-      '_id': {
-        '$in': request.payload.subscriberIds
-      }
-    });
+    // const subscriptionsPromise = Subscription.find({
+    //   '_id': {
+    //     '$in': request.payload.subscriberIds
+    //   }
+    // });
+    // for right now we'll just send to everyone
+    const subscriptionsPromise = Subscription.find({});
 
     Promise.all([messagePromise, subscriptionsPromise])
       .then(values => {
@@ -31,13 +33,26 @@ exports.send = {
         let notificationPromises = [];
 
         subscriptions.forEach(subscription => {
+          const messageSubdoc = subscription.messages.create({ messageId: message._id });
+          subscription.messages.push(messageSubdoc);
+          subscription.save();
+
+          message.subscriptions[subscription._id] = true;
+          message.save();
+
+          const messageData = Object.assign({}, message.data, {
+            subscriptionId: subscription._id,
+            messageId: messageSubdoc._id
+          });
+
           const notificationPromise = webPush.sendNotification(subscription.endpoint, {
             ttl: 0,
             userPublicKey: urlBase64.encode(subscription.keys.p256dh),
             userAuth: urlBase64.encode(subscription.keys.auth),
             payload: JSON.stringify({
               title: message.title,
-              body: message.body
+              body: message.body,
+              data: messageData
             })
           })
             .then((body) => {

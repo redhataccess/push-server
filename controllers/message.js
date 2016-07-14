@@ -26,7 +26,8 @@ exports.create = {
   validate: {
     payload: {
       title: Joi.string().required(),
-      body: Joi.string().required()
+      body: Joi.string().required(),
+      data: Joi.object()
     }
   },
   handler: (request, reply) => {
