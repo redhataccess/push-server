@@ -46,7 +46,7 @@ exports.send = {
           });
 
           const notificationPromise = webPush.sendNotification(subscription.endpoint, {
-            ttl: 0,
+            ttl: 120,
             userPublicKey: urlBase64.encode(subscription.keys.p256dh),
             userAuth: urlBase64.encode(subscription.keys.auth),
             payload: JSON.stringify({
